@@ -1,0 +1,72 @@
+.card {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  padding: 1rem;
+  transition: all 300ms ease-in-out;
+  box-shadow: 0px 3px 3px rgba(34, 34, 34, 0.692);
+  height: 40rem;
+}
+
+.card:hover{
+  transform: scale(1.01);
+  box-shadow: 0px 8px 30px rgba(34, 34, 34, 0.692);
+  
+}
+
+
+.cardImg {
+  height: 30rem;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.addFav {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  right: 0;
+  margin: 1rem;
+  cursor: pointer;
+}
+
+.cardBottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+}
+
+.cardTitle {
+  border-top: 1px solid rgb(192, 192, 192);
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin: 1rem 0 0;
+  padding: 1rem 0 0;
+  text-transform: uppercase;
+  color: black;
+  font-weight: 700;
+}
+
+.price{
+  color: gray;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.addButton {
+  margin-top: 1rem;
+}
+
+.addButton:hover {
+  color: red;
+}
+
+.cardInfo {
+  bottom: 0px;
+  background-color: white;
+  width: 100%;
+}

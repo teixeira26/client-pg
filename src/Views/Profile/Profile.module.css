@@ -1,0 +1,65 @@
+.infoProfile {
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    gap: 1rem;
+}
+
+.infoProfile img {
+    height: 6rem;
+    border-radius: 1em;
+}
+
+.mainInfoProfile {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1em;
+    margin-top: 4em;
+}
+
+.mainInfoProfile h4 {
+    text-transform: none;
+}
+
+.petsProfile {
+    display: flex;
+    flex-direction: column;
+    margin-top: 4em;
+    margin-bottom: 8rem;
+}
+
+.petsProfile article {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+    margin-top: 1em;
+}
+
+.pets {
+    display: flex;
+    gap: 2rem;
+}
+
+.petInfo {
+    display: flex;
+    flex-direction: column;
+    border-style: solid;
+    border-color: #52b788;
+    border-radius: 1em;
+    height: min-content;
+    width: 20vw;
+}
+.petInfo img {
+    height: 14rem;
+    object-fit: cover;
+    object-position: bottom;
+}
+
+.petData {
+    align-items: center;
+    justify-content: left;
+    padding: 1em;
+}
