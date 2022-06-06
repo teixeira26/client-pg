@@ -5,52 +5,61 @@ import * as yup from "yup";
 import "semantic-ui-css/semantic.min.css";
 import { useDispatch } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react";
-import { putProvider } from "../../redux/actions/ownProvActions";
-import { useNavigate } from "react-router-dom";
-
-
+import { postProvider, putProvider } from "../../redux/actions/ownProvActions";
+import { Link, useNavigate } from "react-router-dom";
+import style from "./InfoProvider.module.css";
+import NavBar from "../NavBar/NavBarShop";
+import Footer from "../Footer/Footer";
 
 export default function InfoProvider() {
-  const dispatch = useDispatch();
   const { user } = useAuth0();
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
 
-  
-  const formik = useFormik({
-    initialValues: {
-      email:user.email,
-      address:{},  
-      city: "",
-      state: "",
-      road:"",
-    },
+  function walk() {
+    dispatch(
+      postProvider({
+        email: user.email,
+        name: user.given_name,
+        lastName: user.family_name,
+        service: "paseo",
+      })
+    );
+  }
 
-    validationSchema:yup.object({
-        city:yup.string().required(),
-        state:yup.string().required(),
-        road:yup.string().required(),
-    }),
-
-    onSubmit: (formData) => {
-      formData = {
-          email:formData.email,
-          address:{
-              city:formData.city,
-              state:formData.state,
-              road:formData.road
-          }
-      }
-      console.log(formData);
-      dispatch(putProvider(formData.email, formData));
-      navigate('/home')
-    },
-  });
+  function lodging() {
+    dispatch(
+      postProvider({
+        email: user.email,
+        name: user.given_name,
+        lastName: user.family_name,
+        service: "hospedaje",
+      })
+    );
+  }
 
   return (
-    <Container>
-      <h2>Antes de Seguir necesitamos más información</h2>
+    <div>
+      <NavBar />
+      <div className={style.container}>
+        <Container>
+          <div className={style.centerFlex}>
+            <h2>¿Qué servicio te gustaría ofrecer?</h2>
+            <div className={style.buttons}>
+              <div className={style.button}>
+              <Link to="/paseo">
+                <button onClick={walk}>PASEO</button>
+              </Link>
+              </div>
+              
+              <div>
+              <Link to="/hospedaje">
+                <button onClick={lodging}>HOSPEDAJE</button>
+              </Link>
+              </div>
+              
+            </div>
 
-      <Form onSubmit={formik.handleSubmit}>
+            {/* <Form onSubmit={formik.handleSubmit}>
         <Form.Input
           type="text"
           placeholder="Localidad"
@@ -75,7 +84,11 @@ export default function InfoProvider() {
 
 
         <Button type="submit">Enviar</Button>
-      </Form>
-    </Container>
+      </Form> */}
+          </div>
+        </Container>
+      </div>
+      <Footer />
+    </div>
   );
 }

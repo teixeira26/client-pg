@@ -1,10 +1,14 @@
 .container{
-    border-top: 1px solid rgb(204, 204, 204);
+    border-top: 1px solid #bbb7ae;
+    background-color: white;
+    left: 0;
+    right: 0;
+    bottom: 0%;
 }
 .footerFlex{
     display: flex;
     justify-content: space-between; 
-    padding: 3rem;
+    padding: 1rem 3rem;
 }
 
 .footerSign{
@@ -51,7 +55,6 @@
     margin-bottom: 0;
 }
 
-
 .social:not(:last-child){
     margin: 1rem;
 }
@@ -59,11 +62,3 @@
 ion-icon{
     color: black;
 }
-
-.goUp{
-    width: 80px;
-    height: 80px;
-}
-
-
-

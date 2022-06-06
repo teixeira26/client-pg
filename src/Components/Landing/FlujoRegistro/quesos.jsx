@@ -15,26 +15,29 @@ export const Quesos = ()=>{
           await axios.post('https://proyecto-grupal.herokuapp.com/owners', owner)
           navigate('/home')
     }
-    const providerRegister = async()=>{
-        let provider = {
-            email:user.email,
-            name:user.given_name,
-            lastName: user.family_name,
-          }
-          await axios.post('https://proyecto-grupal.herokuapp.com/providers', provider)
-          navigate('/infoProvider')
-    }
+    // const providerRegister = async()=>{
+    //     let provider = {
+    //         email:user.email,
+    //         name:user.given_name,
+    //         lastName: user.family_name,
+    //       }
+    //       await axios.post('https://proyecto-grupal.herokuapp.com/providers', provider)
+    //       navigate('/infoProvider')
+    // }
     return(
-        <div style={{
-            display:"flex",
-            justifyContent:"center",
-            alignItems:"center",
-        }}>
+        // <div style={{
+        //     display:"flex",
+        //     justifyContent:"center",
+        //     alignItems:"center",
+        // }}>
+        // <div>
+        //     <h1>BIENVENIDO, AMANTE DE LAS MASCOTAS</h1>
+        // <button onClick={ownerRegister}>COMENZAR</button>
+        // {/* <button onClick={providerRegister}>provider</button> */}
+        // </div>
+        // </div>
         <div>
-            <h1>Que tipo de cuenta te gustaria crear ?</h1>
-        <button onClick={ownerRegister}>owner</button>
-        <button onClick={providerRegister}>provider</button>
-        </div>
+        {ownerRegister()}
         </div>
     )
 }

@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
 import styles from "./NavBarShop.module.css";
-import Button from "../GlobalCss/Button.module.css";
-import global from "../GlobalCss/Global.module.css";
 import OutContainer from "../GlobalCss/OutContainer.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import Login from "../Auth0/Login";
@@ -17,7 +15,8 @@ function NavBar() {
   const dispatch = useDispatch();
   const { user, isAuthenticated } = useAuth0();
   const [total, setTotal] = useState(0);
-  const [productsFavNumber, setProductsFavNumber] = useState(0)
+  const [productsFavNumber, setProductsFavNumber] = useState(0);
+  const [userData, setUser] = useState({});
   const state = useSelector((state) => {
     return state;
   });
@@ -25,6 +24,21 @@ function NavBar() {
   useEffect(() => {
     if(user){
       dispatch(chargeCart(user.email))
+      axios.get('https://proyecto-grupal.herokuapp.com/owners').then(x=>{
+    
+    const userdb = x.data.find(x=>x.email === user.email);
+        console.log(userdb)
+        if(x){
+        setUser({
+            nombre:user.name,
+            picture:userdb.profilePicture&&userdb.profilePicture[0]?userdb.profilePicture[0]:'/assets/img/notloged.png',
+            email:user.email,
+            pets:userdb.pets,
+            address:userdb.address,
+        })
+        console.log('userdb', userdb)}
+
+    })
     }
     // axios.get(`https://proyecto-grupal.herokuapp.com/owners/getFavorites/${user.email}`).then(x=>{
     //     setProductsFavNumber(x.data)})
@@ -40,8 +54,10 @@ function NavBar() {
   }, [state.cart]);
 
   useEffect(() => {
-    setProductsFavNumber(state.favorites?state.favorites.length:0);
+    setProductsFavNumber(state.favorites? state.favorites.length : 0);
   }, [state.favorites]);
+
+  console.log('state.favorites',state.favorites)
 
   return (
     <div className={OutContainer.container}>
@@ -70,7 +86,7 @@ function NavBar() {
           <div className={styles.icons}>
             <div className={styles.icon}>
               <NavLink to="/shoppingcart" className={styles.navLinkIcon}>
-                <ion-icon name="bag-handle-outline"></ion-icon>
+                <img src="../../assets/img/shopping-bag.svg" alt="" />
               </NavLink>
 
               <div className={styles.circle}>{total}</div>
@@ -78,7 +94,7 @@ function NavBar() {
 
             <div className={styles.icon}>
               <NavLink to="/favorites" className={styles.navLinkIcon}>
-                <ion-icon name="heart-outline"></ion-icon>
+                <img src="../../assets/img/favorite.svg" alt="" />
               </NavLink>
               <div className={styles.circle}>{productsFavNumber}</div>
             </div>
@@ -90,7 +106,7 @@ function NavBar() {
               <NavLink to="/profile" className={styles.profile}>
                 <img
                   className={styles.profilePicture}
-                  src={isAuthenticated && user.picture}
+                  src={isAuthenticated && userData.picture?userData.picture:user.picture}
                   alt=""
                 ></img>
               </NavLink>

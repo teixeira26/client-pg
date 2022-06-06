@@ -1,73 +1,85 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "../../redux/actions/petshopActions";
-import Button from "../GlobalCss/Button.module.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { addTofavorites, getProducts } from "../../redux/actions/petshopActions";
+import { useAuth0 } from "@auth0/auth0-react";
+import NavBarShop from "../NavBar/NavBarShop";
+import Footer from '../Footer/Footer';
+import inContainer from "../GlobalCss/InContainer.module.css";
+import shopStyles from "../Shop/Shop.module.css";
+import styles from "./Favorites.module.css";
 
+const Favorites = () => {
+  const products = useSelector((state) => state.filteredProducts);
+  const { user } = useAuth0()
+  const [productsFav, setProductsFav] = useState([])
+  const [productsFavNumber, setProductsFavNumber] = useState([])
+  const dispatch = useDispatch()
+  useEffect(() => {
+    axios.get(`https://proyecto-grupal.herokuapp.com/owners/getFavorites/${user.email}`).then(x => {
+      setProductsFavNumber(x.data)
+    })
+    dispatch(getProducts());
+  }, [dispatch, user.email]);
 
-
-const Favorites = ()=>{
-    const products = useSelector((state) => state.filteredProducts);
-    const {user} = useAuth0()
-    const [productsFav, setProductsFav] = useState([])
-    const [productsFavNumber, setProductsFavNumber] = useState([])
-    const dispatch = useDispatch()
-    useEffect(() => {
-        axios.get(`https://proyecto-grupal.herokuapp.com/owners/getFavorites/${user.email}`).then(x=>{
-        setProductsFavNumber(x.data)
-      })
-      dispatch(getProducts());
-      }, [dispatch, user.email]);
-
-      useEffect(() => {
-       setProductsFav(products.filter(x=>{
-           if(productsFavNumber.includes(x.id)){
-               return x
-           }
-       }))
-      }, [products, productsFavNumber]);
-
-
-    async function deleteFav(id){
-      let withoutFav = productsFav.filter(fav => fav.id !== id)
-      setProductsFav(withoutFav)
-
-      const AllOwners = await axios.get("https://proyecto-grupal.herokuapp.com/owners")
-
-      const owner = AllOwners.data.find(x=>x.email === user.email)
-      console.log(owner)
-      let objToPut = {
-        ...owner,
-        favorites: owner.favorites[0] ? owner.favorites.filter(x => x !== id) : []
+  useEffect(() => {
+    setProductsFav(products.filter(x => {
+      if (productsFavNumber.includes(x.id)) {
+        return x
       }
-      console.log(objToPut)
-      await axios.put("https://proyecto-grupal.herokuapp.com/owners/addFavorite", objToPut)
+    }))
+  }, [products, productsFavNumber]);
 
+  async function deleteFav(id) {
+    let withoutFav = productsFav.filter(fav => fav.id !== id)
+    setProductsFav(withoutFav)
 
+    const AllOwners = await axios.get("https://proyecto-grupal.herokuapp.com/owners");
+
+    const owner = AllOwners.data.find(x => x.email === user.email)
+    console.log(owner)
+    let objToPut = {
+      ...owner,
+      favorites: owner.favorites[0] ? owner.favorites.filter(x => x !== id) : []
     }
+    console.log(objToPut);
+    await axios.put("https://proyecto-grupal.herokuapp.com/owners/addFavorite", objToPut);
+    dispatch(addTofavorites(objToPut.favorites));
+  };
 
-    return(
-        <div>
+  return (
+    <div>
+      <NavBarShop />
+      <div className={inContainer.container}>
+        <div className={styles.sectionFav}>
           <Link to='/shop'>
-          <button>Volver al shop</button>
+            <img src="/assets/img/arrow-left.svg" alt="" className={shopStyles.leftArrow} />
           </Link>
-          {productsFav&&productsFav.length?productsFav.map(x=>{
-          return(
-            <div> 
-                <Link to={`/shop/${x.id}`}>
-                <h1>{x.name}</h1>
-                <img alt='img not found' src={x.profilePicture}></img>
-                </Link>
-
-                <button onClick={() => deleteFav(x.id)}>Quitar de favoritos</button>
-
-            </div>
-          )
-          }):<h1>NO hay favoritos</h1>}
+          <h1>Mis favoritos</h1>
         </div>
-    )
-}
+        <div className={styles.gridFav}>
+          {productsFav && productsFav.length ? productsFav.map(x => {
+            return (
+              <div className={styles.card}>
+                <div className={styles.cardData}>
+                  <Link to={`/shop/${x.id}`}>
+                    <img className={styles.favImg} alt='img not found' src={x.profilePicture}></img>
+                  </Link>
+                  <div>
+                    <h1>{x.name}</h1>
+                    <p>Stock disponible: {x.stock} unidades</p>
+                  </div>
+                </div>
+                <button onClick={() => deleteFav(x.id)}>Quitar de favoritos</button>
+              </div>
+            )
+          }) : <h1>NO hay favoritos</h1>}
+        </div>
+      </div>
+      <Footer />
+    </div>
+  )
+};
 
-export default Favorites
+export default Favorites;
