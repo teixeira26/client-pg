@@ -7,7 +7,7 @@ export const Loading = () => {
   const { isAuthenticated, isLoading } = useAuth0();
   const navigate = useNavigate();
   useEffect(() => {
-    if (!isAuthenticated && !isLoading) navigate("/notRegistered");
+    if (!isAuthenticated && !isLoading) navigate("/no-registrado");
   }, [isLoading, isAuthenticated, navigate]);
   return (
     <div className={styles.loading}>
@@ -17,3 +17,5 @@ export const Loading = () => {
 };
 
 export default Loading;
+
+

@@ -2,6 +2,20 @@
     display: flex;
 }
 
+.stars {
+    display: flex;
+    height: 40px;
+    width: 100%;
+    justify-content: flex-start;
+    align-content: center;
+}
+
+.star{
+    color: var(--primaryColor);
+    display: inline;
+    font-size: 40px;
+}
+
 .topinfo h1 {
     color: #0f0b02;
     font-weight: 800;

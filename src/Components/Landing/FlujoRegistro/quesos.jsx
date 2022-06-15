@@ -12,8 +12,8 @@ export const Quesos = ()=>{
             name:user.given_name,
             lastName: user.family_name,
           }
-          await axios.post('https://proyecto-grupal.herokuapp.com/owners', owner)
-          navigate('/home')
+          await axios.post('http://localhost:3001/owners', owner)
+          navigate('/inicio')
     }
     // const providerRegister = async()=>{
     //     let provider = {
@@ -21,7 +21,7 @@ export const Quesos = ()=>{
     //         name:user.given_name,
     //         lastName: user.family_name,
     //       }
-    //       await axios.post('https://proyecto-grupal.herokuapp.com/providers', provider)
+    //       await axios.post('http://localhost:3001/providers', provider)
     //       navigate('/infoProvider')
     // }
     return(

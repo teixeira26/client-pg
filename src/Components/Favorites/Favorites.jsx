@@ -17,7 +17,7 @@ const Favorites = () => {
   const [productsFavNumber, setProductsFavNumber] = useState([])
   const dispatch = useDispatch()
   useEffect(() => {
-    axios.get(`https://proyecto-grupal.herokuapp.com/owners/getFavorites/${user.email}`).then(x => {
+    axios.get(`http://localhost:3001/owners/getFavorites/${user.email}`).then(x => {
       setProductsFavNumber(x.data)
     })
     dispatch(getProducts());
@@ -35,7 +35,7 @@ const Favorites = () => {
     let withoutFav = productsFav.filter(fav => fav.id !== id)
     setProductsFav(withoutFav)
 
-    const AllOwners = await axios.get("https://proyecto-grupal.herokuapp.com/owners");
+    const AllOwners = await axios.get("http://localhost:3001/owners");
 
     const owner = AllOwners.data.find(x => x.email === user.email)
     console.log(owner)
@@ -44,7 +44,7 @@ const Favorites = () => {
       favorites: owner.favorites[0] ? owner.favorites.filter(x => x !== id) : []
     }
     console.log(objToPut);
-    await axios.put("https://proyecto-grupal.herokuapp.com/owners/addFavorite", objToPut);
+    await axios.put("http://localhost:3001/owners/addFavorite", objToPut);
     dispatch(addTofavorites(objToPut.favorites));
   };
 
@@ -71,10 +71,10 @@ const Favorites = () => {
                     <p>Stock disponible: {x.stock} unidades</p>
                   </div>
                 </div>
-                <button onClick={() => deleteFav(x.id)}>Quitar de favoritos</button>
+                <button className="secondaryButton" onClick={() => deleteFav(x.id)}>Eliminar de favoritos</button>
               </div>
             )
-          }) : <h1>NO hay favoritos</h1>}
+          }) : <h1>Todavía no agregaste productos a tu lista de favoritos</h1>}
         </div>
       </div>
       <Footer />

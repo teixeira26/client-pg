@@ -6,12 +6,16 @@ import {
     GET_PROVIDERS,
     ID_PROVIDER,
     SORT_PROVIDER_PRICE,
-    FILTER_PROVIDER_PRICE
+    FILTER_PROVIDER_PRICE,
+    GET_EVENTS,
+    GET_PETS,
+    GET_SOLDS,
+    GET_REVIEWS
 } from '../actions-type/ownProvActionTypes';
 
 export function getOwners() {
     return async function (dispatch) {
-        var json = await axios.get(`https://proyecto-grupal.herokuapp.com/owners`);
+        var json = await axios.get(`http://localhost:3001/owners`);
         return dispatch({
             type: GET_OWNERS,
             payload: json.data
@@ -19,9 +23,10 @@ export function getOwners() {
     }
 };
 
+
 export function getProviders() {
     return async function (dispatch) {
-        var json = await axios.get(`https://proyecto-grupal.herokuapp.com/providers`)
+        var json = await axios.get(`http://localhost:3001/providers`)
         return dispatch({
             type: GET_PROVIDERS,
             payload: json.data
@@ -31,7 +36,7 @@ export function getProviders() {
 
 export function getProviderById(email) {
     return function(dispatch){
-        axios.get(`https://proyecto-grupal.herokuapp.com/providers/${email}`)
+        axios.get(`http://localhost:3001/providers/${email}`)
         .then(response => {
             dispatch({
                 type: ID_PROVIDER,
@@ -44,7 +49,7 @@ export function getProviderById(email) {
 export function getNameOwner(name) {
     return async function (dispatch) {
         try {
-            var json = await axios.get(`https://proyecto-grupal.herokuapp.com/owners?name=${name}`);
+            var json = await axios.get(`http://localhost:3001/owners?name=${name}`);
             return dispatch({
                 type: GET_NAME_OWNER,
                 payload: json.data
@@ -54,6 +59,17 @@ export function getNameOwner(name) {
         }
     }
 };
+
+export function getSolds() {
+    return async function (dispatch) {
+        var json = await axios.get(`http://localhost:3001/solds`);
+        return dispatch({
+            type: GET_SOLDS,
+            payload: json.data
+        })
+    }
+};
+
 
 export function filterByOwner(payload) {
     return {
@@ -65,7 +81,7 @@ export function filterByOwner(payload) {
 export function putProvider(modification) {
     return async function () {
         try {
-            await axios.put(`https://proyecto-grupal.herokuapp.com/providers/`, modification)
+            await axios.put(`http://localhost:3001/providers/`, modification)
         } catch (error) {
             console.log(error)
         }
@@ -76,7 +92,7 @@ export function postPet(email, modification) {
     return async function () {
         try {
             console.log(email)
-            await axios.post(`https://proyecto-grupal.herokuapp.com/pets`, modification)
+            await axios.post(`http://localhost:3001/pets`, modification)
         } catch (error) {
             console.log(error)
         }
@@ -87,7 +103,7 @@ export function putOwnerInfo(email, modification) {
     return async function () {
         try {
             console.log(email)
-            await axios.put(`https://proyecto-grupal.herokuapp.com/owners/${email}`, modification)
+            await axios.put(`http://localhost:3001/owners/${email}`, modification)
         } catch (error) {
             console.log(error)
         }
@@ -96,22 +112,22 @@ export function putOwnerInfo(email, modification) {
 
 export function getPets() {
     return async function (dispatch) {
-        var json = await axios.get(`https://proyecto-grupal.herokuapp.com/pets`);
+        var json = await axios.get(`http://localhost:3001/pets`);
         return dispatch({
-            type: 'GET_PETS',
+            type: GET_PETS,
             payload: json.data
         })
     }
 };
 
 
-export function postProvider(newProvider){
-    return async function (){
-        try{
-            await axios.post(`https://proyecto-grupal.herokuapp.com/providers`, newProvider)
-    }catch(error){
-        console.log(error)
-    }
+export function postProvider(newProvider) {
+    return async function () {
+        try {
+            await axios.post(`http://localhost:3001/providers`, newProvider)
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
 
@@ -129,3 +145,58 @@ export function filterByProviderService(payload){
         payload,
     }
 };
+
+export function getEvents() {
+    return async function (dispatch) {
+        var json = await axios.get(`http://localhost:3001/events`);
+        return dispatch({
+            type: GET_EVENTS,
+            payload: json.data
+        })
+    }
+};
+
+export function postEvent(newEvent) {
+    return async function () {
+        try {
+            await axios.post(`http://localhost:3001/events`, newEvent)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+};
+
+export function getReviews() {
+    return async function (dispatch) {
+        var json = await axios.get(`http://localhost:3001/reviews`);
+        return dispatch({
+            type: GET_REVIEWS,
+            payload: json.data
+        })
+    }
+};
+
+export function putEvent(id, modification) {
+    return async function () {
+        try {
+            await axios.put(`http://localhost:3001/events/${id}`, modification)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+};
+
+
+export function selectedEvent(payload){
+    return {
+        type: 'SELECTED_EVENT',
+        payload,
+    }
+}
+
+
+export function groupEvents(){
+    return{
+        type: 'GROUP_EVENTS'
+    }
+}
