@@ -23,7 +23,7 @@ const DropdownMenu = () => {
   useEffect(() => {
     if (user) {
       dispatch(chargeCart('cart'));
-      axios.get("https://proyecto-grupal.herokuapp.com/owners").then((x) => {
+      axios.get("http://localhost:3001/owners").then((x) => {
         const userdb = x.data.find((x) => x.email === user.email);
         console.log('USUARIO DB', userdb)
         if (userdb) {

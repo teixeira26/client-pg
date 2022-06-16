@@ -26,7 +26,7 @@ function NavBar() {
   useEffect(() => {
     if (user && user.email) {
       axios
-        .get(`https://proyecto-grupal.herokuapp.com/owners/getFavorites/${user.email}`)
+        .get(`http://localhost:3001/owners/getFavorites/${user.email}`)
         .then((x) => {
           console.log(x.data);
           setFavorites(x.data);
@@ -37,7 +37,7 @@ function NavBar() {
 
   useEffect(() => {
     if (user) {
-      axios.get("https://proyecto-grupal.herokuapp.com/owners").then((x) => {
+      axios.get("http://localhost:3001/owners").then((x) => {
         const userdb = x.data.find((x) => x.email === user.email);
         if (userdb) {
           setUser({
@@ -53,7 +53,7 @@ function NavBar() {
         }
       });
     }
-    // axios.get(`https://proyecto-grupal.herokuapp.com/owners/getFavorites/${user.email}`).then(x=>{
+    // axios.get(`http://localhost:3001/owners/getFavorites/${user.email}`).then(x=>{
     //     setProductsFavNumber(x.data)})
   }, [dispatch, user]);
 
