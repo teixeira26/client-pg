@@ -42,7 +42,7 @@ const DropdownMenu = () => {
       });
     }
 
-    // axios.get(`https://proyecto-grupal.herokuapp.com/owners/getFavorites/${user.email}`).then(x=>{
+    // axios.get(`http://localhost:3001/owners/getFavorites/${user.email}`).then(x=>{
     //     setProductsFavNumber(x.data)})
   }, [dispatch, user]);
 
@@ -90,9 +90,14 @@ const DropdownMenu = () => {
             <img src="../assets/img/person-outline.svg" alt="" className="person-outline"/>
             {
               userData.isAdmin ?
-              <NavLink to="/admin">Perfil</NavLink>
+              <NavLink to="/admin">Perfil Admin</NavLink>
                 : <NavLink to="/mi-perfil">Perfil</NavLink>
             }
+          </li>
+          <li className="li-flex">
+            <img src="../assets/img/person-outline.svg" alt="" className="person-outline"/>
+            
+              <NavLink to="/mensajes-pendientes">Mensajes</NavLink>
           </li>
           {/* <li>
             <a href="">Editar Perfil</a>
@@ -103,6 +108,7 @@ const DropdownMenu = () => {
           {/* <li>
             <a href="">Agregar Mascota</a>
           </li> */}
+         
           <li className="li-flex">
             <img src="../assets/img/log-out.svg" alt="" className="log-out" />
             <button

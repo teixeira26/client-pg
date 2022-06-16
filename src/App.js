@@ -4,7 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Landing from "./Components/Landing/Landing";
 import Shop from "./Components/Shop/Shop";
 import AddOwner from "./Components/Forms/AddOwner";
-import NotRegistered from "./Components/Auth0/NotRegistered";
+// import NotRegistered from "./Components/Auth0/NotRegistered";
 import { Quesos } from "./Components/Landing/FlujoRegistro/quesos";
 import Home from "./Components/Home/Home";
 import AddPet from "./Components/Forms/AddPet";
@@ -53,6 +53,8 @@ import SaleDetail from "./Components/Admin/SaleDetail";
 import OfferedServicesDetail from "./Components/Admin/OfferedServicesDetail";
 import HiredServicesDetail from "./Components/Admin/HiredServicesDetail";
 import PaymentBookingCheckout from "./Components/Providers/PaymentBookingCheckout";
+import Banned from "./Views/Profile/Banned";
+import PendentMessages from "./Components/Chat/PendentMessages";
 
 function App() {
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -82,13 +84,13 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/mapview" element={<MapView />} />
-          <Route path="/geolocprovider" element={<GeoLocProvider />} />
+          <Route path="/mapa" element={<MapView />} />
+          <Route path="'/geoloc-yumpi" element={<GeoLocProvider />} />
           <Route
             path="/inicio"
             element={
               isAuthenticated && isBanned ? (
-                <h1>baneado</h1>
+                <Banned />
               ) : !isLoading ? (
                 <Home />
               ) : (
@@ -96,19 +98,18 @@ function App() {
               )
             }
           />
-
           <Route path="/nosotros" element={<About />} />
           <Route path="/contacto" element={<Contact />} />
-          <Route path="/shop" element={!isLoading ? <Shop /> : <Loader />} />
+          <Route path="/shop" element={isBanned ? (<Banned/>): !isLoading ? <Shop /> : <Loader />} />
           <Route
             path="/shop/:id"
             element={!isLoading ? <ProductDetail /> : <Loader />}
           />
           <Route
-            path="/agregarmascota"
+            path="/agregar-mascota"
             element={
               isAuthenticated && isBanned ? (
-                <h1>baneado</h1>
+                <Banned />
               ) : !isLoading ? (
                 <AddPet />
               ) : (
@@ -122,53 +123,104 @@ function App() {
           />
           <Route
             path="/mi-perfil"
-            element={isAuthenticated && isBanned ? (<h1>baneado</h1>): !isLoading ? <Profile /> : <Loader />}
+            element={
+              isAuthenticated && isBanned ? (
+                <Banned />
+              ) : !isLoading ? (
+                <Profile />
+              ) : (
+                <Loader />
+              )
+            }
           />
-          <Route path='/admin' element={
-            isAuthenticated && !isLoading ? <AdminProfile/> : <Loader/>
-          }/>
+          <Route
+            path="/admin"
+            element={
+              isAuthenticated && !isLoading ? <AdminProfile /> : <Loader />
+            }
+          />
           <Route
             path="/servicio"
             element={
-              isAuthenticated && isBanned ? (<h1>baneado</h1>): !isLoading ? <InfoProvider /> : <Loader />
+              isAuthenticated && isBanned ? (
+                <Banned />
+              ) : !isLoading ? (
+                <InfoProvider />
+              ) : (
+                <Loader />
+              )
             }
           />
           <Route
-            path="/providers"
+            path="/yumpis"
             element={
-              isAuthenticated && isBanned ? (<h1>baneado</h1>):!isLoading ? <Providers /> : <Loader />
+              isAuthenticated && isBanned ? (
+                <Banned />
+              ) : !isLoading ? (
+                <Providers />
+              ) : (
+                <Loader />
+              )
             }
           />
           <Route
-            path="/providers/:name"
+            path="/yumpis/:name"
             element={
-              isAuthenticated && isBanned ? (<h1>baneado</h1>):!isLoading ? <DetailProvider /> : <Loader />
+              isAuthenticated && isBanned ? (
+                <Banned />
+              ) : !isLoading ? (
+                <DetailProvider />
+              ) : (
+                <Loader />
+              )
             }
           />
           <Route
             path="/chat/:providerEmail/:ownerEmail"
-            element={isAuthenticated && isBanned ? (<h1>baneado</h1>):!isLoading ? <Chat /> : <Loader />}
+            element={
+              isAuthenticated && isBanned ? (
+                <Banned />
+              ) : !isLoading ? (
+                <Chat />
+              ) : (
+                <Loader />
+              )
+            }
+          />
+          <Route
+            path="/mensajes-pendientes"
+            element={isAuthenticated && isBanned ? (<h1>baneado</h1>):!isLoading ? <PendentMessages/> : <Loader />}
           />
           <Route
             path="/favoritos"
-            element={
-              isAuthenticated && !isLoading ? <Favorites /> : <Loader />
-            }
+            element={isAuthenticated && !isLoading ? <Favorites /> : <Loader />}
           />
           <Route
             path="/mis-datos"
+            element={isAuthenticated && !isLoading ? <InfoOwner /> : <Loader />}
+          />
+          <Route
+            path="/agregar-foto"
             element={
-              isAuthenticated && !isLoading ? <InfoOwner /> : <Loader />
+              isAuthenticated && !isLoading ? <AddHousingPhoto /> : <Loader />
             }
           />
           <Route
-            path="/review/:providerEmail"
-            element={isAuthenticated && isBanned ? (<h1>baneado</h1>):!isLoading ? <Review /> : <Loader />}
+            path="/resena/:providerEmail"
+            element={
+              isAuthenticated && isBanned ? (
+                <Banned />
+              ) : !isLoading ? (
+                <Review />
+              ) : (
+                <Loader />
+              )
+            }
           />
-          <Route
+          {/* <Route
             path="/no-registrado"
             element={<NotRegistered></NotRegistered>}
-          ></Route>
+          ></Route> */}
           <Route path="/mi-carrito" element={<ShoppingCart />} />
           <Route
             path="/confirmacion"
@@ -194,22 +246,50 @@ function App() {
           />
           <Route
             path="/paseo"
-            element={isAuthenticated && isBanned ? (<h1>baneado</h1>):!isLoading ? <Walk /> : <Loader />}
+            element={
+              isAuthenticated && isBanned ? (
+                <Banned />
+              ) : !isLoading ? (
+                <Walk />
+              ) : (
+                <Loader />
+              )
+            }
           />
           <Route
             path="/hospedaje"
-            element={isAuthenticated && isBanned ? (<h1>baneado</h1>):!isLoading ? <Lodging /> : <Loader />}
+            element={
+              isAuthenticated && isBanned ? (
+                <Banned />
+              ) : !isLoading ? (
+                <Lodging />
+              ) : (
+                <Loader />
+              )
+            }
           />
           <Route
             path="/reservar-hospedaje/:providerEmail"
             element={
-              isAuthenticated && isBanned ? (<h1>baneado</h1>):!isLoading ? <BookingLodging /> : <Loader />
+              isAuthenticated && isBanned ? (
+                <Banned />
+              ) : !isLoading ? (
+                <BookingLodging />
+              ) : (
+                <Loader />
+              )
             }
           />
           <Route
             path="/reservar-paseo/:providerEmail"
             element={
-              isAuthenticated && isBanned ? (<h1>baneado</h1>):!isLoading ? <BookingWalk /> : <Loader />
+              isAuthenticated && isBanned ? (
+                <Banned />
+              ) : !isLoading ? (
+                <BookingWalk />
+              ) : (
+                <Loader />
+              )
             }
           />
           <Route
@@ -219,29 +299,29 @@ function App() {
             }
           />
           <Route
-            path="/calificacionesProvider"
+            path="/calificaciones-yumpis"
             element={isAuthenticated && !isLoading ? <Ratings /> : <Loader />}
           />
           <Route
-            path="/calificacionesOwner"
+            path="/calificaciones-dueño"
             element={
               isAuthenticated && !isLoading ? <RatingsOwner /> : <Loader />
             }
           />
           <Route
-            path="/cambiarCalificacion/:id"
+            path="/cambiar-resena/:id"
             element={
               isAuthenticated && !isLoading ? <PutReview /> : <Loader />
             }
           />
           <Route
-            path="/misHorarios"
+            path="/mis-horarios"
             element={
               isAuthenticated && !isLoading ? <ScheduleProvider /> : <Loader />
             }
           />
           <Route
-            path="/misHorariosHospedaje"
+            path="/mis-horarios-hospedaje"
             element={
               isAuthenticated && !isLoading ? (
                 <ScheduleProviderLogding />
@@ -256,14 +336,16 @@ function App() {
               isAuthenticated && !isLoading ? <PurchasesMade /> : <Loader />
             }
           />
-
           <Route
             path="/pagar-reserva"
             element={
-              isAuthenticated && !isLoading ? <PaymentBookingCheckout /> : <Loader />
+              isAuthenticated && !isLoading ? (
+                <PaymentBookingCheckout />
+              ) : (
+                <Loader />
+              )
             }
           />
-
 
           {/* -------------- RUTAS PRIVADAS -------------------- */}
 
@@ -279,7 +361,6 @@ function App() {
               ) : null
             }
           />
-
           <Route
             path="/admin/agregar-productos"
             element={
@@ -292,7 +373,6 @@ function App() {
               ) : null
             }
           />
-
           <Route
             path="/admin/ventas-petshop"
             element={
@@ -305,7 +385,6 @@ function App() {
               ) : null
             }
           />
-
           <Route
             path="/admin/ventas-petshop/"
             element={
@@ -318,7 +397,6 @@ function App() {
               ) : null
             }
           />
-
           <Route
             path="/admin/ventas-petshop/:id"
             element={
@@ -331,9 +409,6 @@ function App() {
               ) : null
             }
           />
-
-
-
           <Route
             path="/admin/modificar-producto"
             element={
@@ -346,7 +421,6 @@ function App() {
               ) : null
             }
           />
-
           <Route
             path="/admin/get-users"
             element={
@@ -359,7 +433,6 @@ function App() {
               ) : null
             }
           />
-
           <Route
             path="/admin/prestacion-servicios"
             element={
@@ -372,8 +445,7 @@ function App() {
               ) : null
             }
           />
-
-<Route
+          <Route
             path="/admin/servicios-contratados"
             element={
               user && finalizado ? (
@@ -385,9 +457,6 @@ function App() {
               ) : null
             }
           />
-
-
-
           <Route
             path="/admin/listado-productos"
             element={

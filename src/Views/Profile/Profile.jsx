@@ -10,6 +10,9 @@ import styleContainer from "../../Components/GlobalCss/InContainer.module.css";
 import style from "./Profile.module.css";
 import Swal from "sweetalert2";
 import InContainer from "../../Components/GlobalCss/InContainer.module.css";
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
+import { addDays, getDay } from "date-fns";
 
 export default function Profile() {
   const pets = useSelector((state) => state.pets);
@@ -21,6 +24,22 @@ export default function Profile() {
   const [providerInfo, setProviderInfo] = useState();
   const [eventsProvider, setEventsProvider] = useState();
   const [eventsOwner, setEventsOwner] = useState();
+  const [ableDays, setAbleDays] = useState([]);
+
+  useEffect(() => {
+    if (user) {
+      axios
+        .get(
+          "https://proyecto-grupal.herokuapp.com/providers?filter=&order=ASC"
+        )
+        .then((info) => {
+          let data = info.data.find((x) => x.email === user.email);
+          if (data && data.schedule) {
+            setAbleDays(data.schedule);
+          }
+        });
+    }
+  }, [user]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -57,15 +76,17 @@ export default function Profile() {
   useEffect(() => {
     if (user) {
       axios
-        .get("https://proyecto-grupal.herokuapp.com/providers?filter=&order=ASC")
+        .get(
+          "https://proyecto-grupal.herokuapp.com/providers?filter=&order=ASC"
+        )
         .then((x) => {
           let providerCheck = x.data.find((x) => x.email === user.email);
           console.log(providerCheck);
-          if(providerCheck){
+          if (providerCheck) {
             setIsProvider(true);
           }
-          
-          if (providerCheck && providerCheck.service === "paseo") {
+
+          if (providerCheck && providerCheck.service[0] === "paseo") {
             providerCheck = {
               ...providerCheck,
               schedule: providerCheck.schedule.map((x) => JSON.parse(x)),
@@ -73,13 +94,16 @@ export default function Profile() {
             setIsProvider(true);
             setProviderInfo(providerCheck);
             console.log(providerCheck);
-          }
+          } else if (providerCheck && providerCheck.service[0] === "hospedaje")
+            setProviderInfo(providerCheck);
         });
     }
   }, [user]);
 
   async function byePet(id) {
-    await axios.delete(`https://proyecto-grupal.herokuapp.com/pets/${id}`, { isActive: false });
+    await axios.delete(`https://proyecto-grupal.herokuapp.com/pets/${id}`, {
+      isActive: false,
+    });
     dispatch(getPets());
   }
 
@@ -121,25 +145,22 @@ export default function Profile() {
                     <button className="secondaryButton">Mis compras</button>
                   </Link>
                 </div>
-
                 <div className={style.service}>
-                  <Link to="/calificacionesOwner">
+                  <Link to="/calificaciones-dueño">
                     <button className="secondaryButton">
                       Reseñas enviadas
                     </button>
                   </Link>
                 </div>
-
                 {isProvider && (
                   <div className={style.service}>
-                    <Link to="/calificacionesProvider">
+                    <Link to="/calificaciones-yumpis">
                       <button className="primaryButton">
                         Reseñas recibidas
                       </button>
                     </Link>
                   </div>
                 )}
-
                 {
                   <div className={style.service}>
                     <button className="primaryButton" onClick={myServices}>
@@ -163,39 +184,45 @@ export default function Profile() {
             providerInfo.schedule &&
             providerInfo.service[0] === "hospedaje" && (
               <section className={style.mainInfoProfile}>
-                <h2 className={style.dayTitle} style={{ display: "block" }}>
-                  Mis días de trabajo
-                </h2>
-
-                <br />
-                <br />
-                {console.log(providerInfo)}
-                <div>{providerInfo.schedule.lunes && <h3>lunes</h3>}</div>
-                <div>{providerInfo.schedule.martes && <h3>martes</h3>}</div>
                 <div>
-                  {providerInfo.schedule.miercoles && <h3>miércoles</h3>}
+                  <h2 className={style.dayTitle} style={{ display: "block" }}>
+                    Mis días de trabajo
+                  </h2>
+                  <DatePicker
+                    // filterDate={disableDates}
+                    includeDates={
+                      ableDays && ableDays.length
+                        ? ableDays.map((x) => {
+                            const dayTemp = x.split("/")[0];
+                            const monthTemp = x.split("/")[1];
+                            let newDate = x.split("/");
+                            newDate[0] = monthTemp;
+                            newDate[1] = dayTemp;
+                            return addDays(new Date(newDate.join("/")), 0);
+                          })
+                        : []
+                    } //'06/31/2022'
+                    inline
+                  />
+                  <Link to="/mis-horarios-hospedaje">
+                    <button className="terciaryButton">Editar horarios</button>
+                  </Link>
                 </div>
-                <div>{providerInfo.schedule.jueves && <h3>jueves</h3>}</div>
-                <div>{providerInfo.schedule.viernes && <h3>viernes</h3>}</div>
-                <div>{providerInfo.schedule.sabado && <h3>sábado</h3>}</div>
-                <div>{providerInfo.schedule.domingo && <h3>domingo</h3>}</div>
-                <Link to="/misHorariosHospedaje">
-                  <button className="terciaryButton">Editar horarios</button>
-                </Link>
+
+                {console.log(providerInfo)}
               </section>
             )}
           {providerInfo && providerInfo.service[0] === "hospedaje" && (
             <div>
-              <h3 className={style.hogar}>Mi dulce hogar</h3>
+              <h3 className={style.hogar}>Mi hogar</h3>
               <div className={style.buttonPhoto}>
                 <input
-                  className="secondaryButton"
+                  className="primaryButton"
                   type="button"
                   value="Agregar Foto"
                   onClick={() => navigate("/agregar-foto")}
                 />
               </div>
-
               <div className={style.housingGrid}>
                 {providerInfo.housingPhotos &&
                   providerInfo.housingPhotos.map((x, y) => {
@@ -211,109 +238,6 @@ export default function Profile() {
               </div>
             </div>
           )}
-          <section className={style.petSection}>
-            <div className={style.addPet}>
-              <h2 className={style.boxLabel}>Mis mascotas</h2>
-            </div>
-            <article className={style.petsProfile}>
-              {userData.pets && userData.pets.length > 0
-                ? userData.pets.map((x, y) => {
-                    if (x.isActive) {
-                      return (
-                        <div className={style.petInfo} key={y}>
-                          <div className={style.profilePictureCont}>
-                            <img
-                              src={x.profilePicture}
-                              alt="profilePicture"
-                              className={style.profilePicture}
-                            />
-                          </div>
-                          <div className={style.petData}>
-                            <h2 className={style.titulo}>{x.name}</h2>
-                            <h4 className={style.race}>
-                              {" "}
-                              Raza: <span className={style.span}>{x.race}</span>
-                            </h4>
-                            <p className={style.aboutDog}>
-                              Sobre {x.name}:{" "}
-                              <span className={style.span}>
-                                {x.description}
-                              </span>
-                            </p>
-                          </div>
-                          <button
-                            className="secondaryButton"
-                            onClick={() => {
-                              Swal.fire({
-                                title:
-                                  "¿Estás seguro que querés eliminar a esta mascota?",
-                                showDenyButton: true,
-                                confirmButtonText: "Eliminar",
-                                denyButtonText: `Cancelar`,
-                              }).then(async (result) => {
-                                if (result.isConfirmed) {
-                                  Swal.fire(
-                                    "¡La mascota fue eliminada!",
-                                    "",
-                                    "success"
-                                  );
-                                  byePet(x.id);
-                                } else if (result.isDenied) {
-                                  Swal.fire("", "", "info");
-                                }
-                              });
-                            }}
-                          >
-                            X
-                          </button>
-                        </div>
-                      );
-                    }
-                  })
-                : null}
-              <Link to="/agregarmascota">
-                <button className="primaryButton">Agregar mascota</button>
-              </Link>
-            </article>
-          </section>
-
-          {/* {providerInfo&& providerInfo.schedule && providerInfo.service[0] === 'paseo' &&<section className={style.mainInfoProfile}>
-          <h2 style={{display:"block"}}>Mis horarios de trabajo</h2>
-          <br/>
-          <br/>
-          {/* {console.log(providerInfo)}
-          <div style={{display:'block'}}><h3>lunes</h3>{providerInfo.schedule.lunes.length>0 &&providerInfo.schedule.lunes.map(x=><div><h4>{x}</h4></div>)}</div>
-          <div><h3>martes</h3>{providerInfo.schedule.martes.length>0&&providerInfo.schedule.martes.map(x=><div><h4>{x}</h4></div>)}</div>
-          <div><h3>miércoles</h3>{providerInfo.schedule.miercoles.length>0&&providerInfo.schedule.miercoles.map(x=><div><h4>{x}</h4></div>)}</div>
-          <div><h3>jueves</h3>{providerInfo.schedule.jueves.length>0&&providerInfo.schedule.jueves.map(x=><div><h4>{x}</h4></div>)}</div>
-          <div><h3>viernes</h3>{providerInfo.schedule.viernes.length>0&&providerInfo.schedule.viernes.map(x=><div><h4>{x}</h4></div>)}</div>
-          <div><h3>sábado</h3>{providerInfo.schedule.sabado.length>0&&providerInfo.schedule.sabado.map(x=><div><h4>{x}</h4></div>)}</div>
-          <div><h3>domingo</h3>{providerInfo.schedule.domingo.length>0&&providerInfo.schedule.domingo.map(x=><div><h4>{x}</h4></div>)}</div>
-      
-        </section>} */}
-          {providerInfo &&
-            providerInfo.schedule &&
-            providerInfo.service[0] === "hospedaje" && (
-              <section className={style.mainInfoProfile}>
-                <h2 style={{ display: "block" }}>Mis días de trabajo</h2>
-                <br />
-                <br />
-                {console.log(providerInfo)}
-                <div>{providerInfo.schedule.lunes && <h3>lunes</h3>}</div>
-                <div>{providerInfo.schedule.martes && <h3>martes</h3>}</div>
-                <div>
-                  {providerInfo.schedule.miercoles && <h3>miércoles</h3>}
-                </div>
-                <div>{providerInfo.schedule.jueves && <h3>jueves</h3>}</div>
-                <div>{providerInfo.schedule.viernes && <h3>viernes</h3>}</div>
-                <div>{providerInfo.schedule.sabado && <h3>sábado</h3>}</div>
-                <div>{providerInfo.schedule.domingo && <h3>domingo</h3>}</div>
-                <Link to="/misHorariosHospedaje">
-                  <button>Editar horarios</button>
-                </Link>
-              </section>
-            )}
-
           {providerInfo &&
             providerInfo.schedule &&
             providerInfo.service[0] === "paseo" && (
@@ -392,11 +316,114 @@ export default function Profile() {
                       </div>
                     ))}
                 </div>
-                <Link to="/misHorarios">
-                  <button>Editar horarios</button>
+                <Link to="/mis-horarios">
+                  <button className="primaryButton">Editar horarios</button>
                 </Link>
               </section>
             )}
+          <section className={style.petSection}>
+            <div className={style.addPet}>
+              <h2 className={style.boxLabel}>Mis mascotas</h2>
+            </div>
+            <article className={style.petsProfile}>
+              {userData.pets && userData.pets.length > 0
+                ? userData.pets.map((x, y) => {
+                    if (x.isActive) {
+                      return (
+                        <div className={style.petInfo} key={y}>
+                          <div className={style.profilePictureCont}>
+                            <img
+                              src={x.profilePicture}
+                              alt="profilePicture"
+                              className={style.profilePicture}
+                            />
+                          </div>
+                          <div className={style.petData}>
+                            <h2 className={style.titulo}>{x.name}</h2>
+                            <h4 className={style.race}>
+                              {" "}
+                              Raza: <span className={style.span}>{x.race}</span>
+                            </h4>
+                            <p className={style.aboutDog}>
+                              Sobre {x.name}:{" "}
+                              <span className={style.span}>
+                                {x.description}
+                              </span>
+                            </p>
+                          </div>
+                          <button
+                            className="secondaryButton"
+                            onClick={() => {
+                              Swal.fire({
+                                title:
+                                  "¿Estás seguro que querés eliminar a esta mascota?",
+                                showDenyButton: true,
+                                confirmButtonText: "Eliminar",
+                                denyButtonText: `Cancelar`,
+                              }).then(async (result) => {
+                                if (result.isConfirmed) {
+                                  Swal.fire(
+                                    "¡La mascota fue eliminada!",
+                                    "",
+                                    "success"
+                                  );
+                                  byePet(x.id);
+                                } else if (result.isDenied) {
+                                  Swal.fire("", "", "info");
+                                }
+                              });
+                            }}
+                          >
+                            X
+                          </button>
+                        </div>
+                      );
+                    }
+                  })
+                : null}
+
+              {/* {providerInfo &&
+            providerInfo.schedule &&
+            providerInfo.service[0] === "hospedaje" && (
+              <section className={style.mainInfoProfile}>
+                <h2 style={{ display: "block" }}>Mis días de trabajo</h2>
+                <br />
+                <br />
+                {console.log(providerInfo)}
+                <div>{providerInfo.schedule.lunes && <h3>Lunes</h3>}</div>
+                <div>{providerInfo.schedule.martes && <h3>Martes</h3>}</div>
+                <div>
+                  {providerInfo.schedule.miercoles && <h3>Miércoles</h3>}
+                </div>
+                <div>{providerInfo.schedule.jueves && <h3>Jueves</h3>}</div>
+                <div>{providerInfo.schedule.viernes && <h3>Viernes</h3>}</div>
+                <div>{providerInfo.schedule.sabado && <h3>Sábado</h3>}</div>
+                <div>{providerInfo.schedule.domingo && <h3>Domingo</h3>}</div>
+                <Link to="/mis-horarios-hospedaje">
+                  <button className="terciaryButton">Editar horarios</button>
+                </Link>
+              </section>
+            )} */}
+
+              <Link to="/agregar-mascota">
+                <button className="primaryButton">Agregar mascota</button>
+              </Link>
+            </article>
+          </section>
+          {/* {providerInfo&& providerInfo.schedule && providerInfo.service[0] === 'paseo' &&<section className={style.mainInfoProfile}>
+          <h2 style={{display:"block"}}>Mis horarios de trabajo</h2>
+          <br/>
+          <br/>
+          {/* {console.log(providerInfo)}
+          <div style={{display:'block'}}><h3>lunes</h3>{providerInfo.schedule.lunes.length>0 &&providerInfo.schedule.lunes.map(x=><div><h4>{x}</h4></div>)}</div>
+          <div><h3>martes</h3>{providerInfo.schedule.martes.length>0&&providerInfo.schedule.martes.map(x=><div><h4>{x}</h4></div>)}</div>
+          <div><h3>miércoles</h3>{providerInfo.schedule.miercoles.length>0&&providerInfo.schedule.miercoles.map(x=><div><h4>{x}</h4></div>)}</div>
+          <div><h3>jueves</h3>{providerInfo.schedule.jueves.length>0&&providerInfo.schedule.jueves.map(x=><div><h4>{x}</h4></div>)}</div>
+          <div><h3>viernes</h3>{providerInfo.schedule.viernes.length>0&&providerInfo.schedule.viernes.map(x=><div><h4>{x}</h4></div>)}</div>
+          <div><h3>sábado</h3>{providerInfo.schedule.sabado.length>0&&providerInfo.schedule.sabado.map(x=><div><h4>{x}</h4></div>)}</div>
+          <div><h3>domingo</h3>{providerInfo.schedule.domingo.length>0&&providerInfo.schedule.domingo.map(x=><div><h4>{x}</h4></div>)}</div>
+        </section>} */}
+
           <section>
             <div className={style.addPet}></div>
             <article className={style.petsProfile}>
@@ -424,7 +451,6 @@ export default function Profile() {
                 </div>
               )}
             </article>
-
             {isProvider && eventsProvider
               ? eventsProvider.map((x) => {
                   return (

@@ -10,6 +10,7 @@ import Footer from "../Footer/Footer";
 import TableCell from "@mui/material/TableCell";
 import Table from "@mui/material/Table";
 import TableRow from "@mui/material/TableRow";
+import style from "./AdminDashboard.module.css"
 
 export default function SalesReceipts() {
   const navigate = useNavigate();
@@ -59,12 +60,15 @@ export default function SalesReceipts() {
   });
 
   function back(){
-    navigate('/admin/dashboard')
+    navigate('/admin')
   }
   
   return (
     <>
       <NavBar />
+      <div className={style.contenedor}>
+
+      
       <Table stickyHeader aria-label="sticky table">
         <TableRow stickyHeader aria-label="sticky table">
           <TableCell align="center" colSpan={7}>
@@ -81,7 +85,7 @@ export default function SalesReceipts() {
         />
       </div>
       <Button onClick={back}>REGRESAR</Button>
-
+      </div>
       <Footer />
     </>
   );

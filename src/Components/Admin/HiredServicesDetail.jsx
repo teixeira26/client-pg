@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { getOwnerById, getProviderById, getEvents } from "../../redux/actions/ownProvActions"
+import { cleanDetail } from "../../redux/actions/petshopActions"
 import { useEffect } from "react"
 import NavBar from "../NavBar/NavBarShop"
 import Footer from "../Footer/Footer"
@@ -10,6 +11,7 @@ import TableRow from "@mui/material/TableRow";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import Button from "@material-ui/core/Button";
 import { useNavigate } from "react-router-dom"
+import style from "./AdminDashboard.module.css"
 
 
 
@@ -26,6 +28,10 @@ const { user } = useAuth0();
   useEffect(()=>{
     dispatch(getEvents())
     dispatch(getOwnerById(idUser))
+}, [dispatch])
+
+useEffect(()=>{
+  return ()=> dispatch(cleanDetail())
 }, [dispatch])
 
   let events = useSelector(state => state.events)
@@ -81,6 +87,7 @@ const { user } = useAuth0();
     return(
         <>
         <NavBar />
+        <div className={style.contenedor}>
         <Table stickyHeader aria-label="sticky table">
           <TableRow stickyHeader aria-label="sticky table">
             <TableCell align="center" colSpan={7}>
@@ -98,6 +105,8 @@ const { user } = useAuth0();
         </div>
         <Button onClick={back}>REGRESAR</Button>
   
+        </div>
+        
         <Footer />
       </>
 

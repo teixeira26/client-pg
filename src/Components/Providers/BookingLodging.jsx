@@ -8,7 +8,7 @@ import { getEvents, postEvent, getPets, getProviderById } from "../../redux/acti
 import { Form, Button } from "semantic-ui-react";
 import inContainer from '../GlobalCss/InContainer.module.css';
 import NavBar from "../NavBar/NavBarShop";
-
+import { cleanDetail } from "../../redux/actions/petshopActions";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { addDays, getDay } from 'date-fns';
@@ -32,6 +32,10 @@ export default function BookingLodging() {
     useEffect(() => {
         dispatch(getEvents())
     }, [])
+
+    useEffect(()=>{
+        return ()=> dispatch(cleanDetail())
+      }, [dispatch])
 
     const events = useSelector(state => state.events)
 
@@ -111,7 +115,7 @@ export default function BookingLodging() {
                         console.log('formdata', formData)
                         await axios.post("https://proyecto-grupal.herokuapp.com/events", formData);
                     }
-                    axios.post('https://proyecto-grupal.herokuapp.com/mailer/', { email: user.email, subject: "Confirmación de reserva Yum Paw", text: "Recién hiciste una reserva en nuestra página, te felicitamos :)" })
+                    // axios.post('https://proyecto-grupal.herokuapp.com/mailer/', { email: user.email, subject: "Confirmación de reserva Yum Paw", text: "Recién hiciste una reserva en nuestra página, te felicitamos :)" })
                     console.log(formData);
                     Swal.fire('¡La reserva fue confirmada con éxito!', '', 'success')
                     navigate('/mis-servicios')
@@ -255,7 +259,7 @@ export default function BookingLodging() {
                         }}
                     ></textarea>
 
-                    <Link to={`/chat/${providerEmail}/${ownerEmail}`}><button className="secondaryButton">Cancelar</button></Link>
+                    <Link to={`/providers`}><button className="secondaryButton">Cancelar</button></Link>
                     <button className="primaryButton">Continuar con el pago</button>
                 </Form>
             </div>
