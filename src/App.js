@@ -49,6 +49,10 @@ import PutProduct from "./Components/Admin/PutProduct";
 import PurchasesMade from "./Components/Shop/PurchasesMade";
 import AdminProfile from "./Views/Profile/AdminProfile";
 import AddHousingPhoto from "./Components/Forms/AddHousingPhoto";
+import SaleDetail from "./Components/Admin/SaleDetail";
+import OfferedServicesDetail from "./Components/Admin/OfferedServicesDetail";
+import HiredServicesDetail from "./Components/Admin/HiredServicesDetail";
+import PaymentBookingCheckout from "./Components/Providers/PaymentBookingCheckout";
 
 function App() {
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -58,7 +62,7 @@ function App() {
 
   useEffect(() => {
     const searchUser = () => {
-      axios.get("http://localhost:3001/owners").then((res) => {
+      axios.get("https://proyecto-grupal.herokuapp.com/owners").then((res) => {
         let resp = res.data.find((x) => x.email === user.email);
         console.log(resp);
         if (resp) {
@@ -253,6 +257,14 @@ function App() {
             }
           />
 
+          <Route
+            path="/pagar-reserva"
+            element={
+              isAuthenticated && !isLoading ? <PaymentBookingCheckout /> : <Loader />
+            }
+          />
+
+
           {/* -------------- RUTAS PRIVADAS -------------------- */}
 
           <Route
@@ -282,7 +294,7 @@ function App() {
           />
 
           <Route
-            path="/admin/sales-receipts"
+            path="/admin/ventas-petshop"
             element={
               user && finalizado ? (
                 isAdmin ? (
@@ -293,6 +305,34 @@ function App() {
               ) : null
             }
           />
+
+          <Route
+            path="/admin/ventas-petshop/"
+            element={
+              user && finalizado ? (
+                isAdmin ? (
+                  <SalesReceipts />
+                ) : (
+                  <Navigate to="/home" />
+                )
+              ) : null
+            }
+          />
+
+          <Route
+            path="/admin/ventas-petshop/:id"
+            element={
+              user && finalizado ? (
+                isAdmin ? (
+                  <SaleDetail />
+                ) : (
+                  <Navigate to="/home" />
+                )
+              ) : null
+            }
+          />
+
+
 
           <Route
             path="/admin/modificar-producto"
@@ -319,6 +359,34 @@ function App() {
               ) : null
             }
           />
+
+          <Route
+            path="/admin/prestacion-servicios"
+            element={
+              user && finalizado ? (
+                isAdmin ? (
+                  <OfferedServicesDetail />
+                ) : (
+                  <Navigate to="/home" />
+                )
+              ) : null
+            }
+          />
+
+<Route
+            path="/admin/servicios-contratados"
+            element={
+              user && finalizado ? (
+                isAdmin ? (
+                  <HiredServicesDetail />
+                ) : (
+                  <Navigate to="/home" />
+                )
+              ) : null
+            }
+          />
+
+
 
           <Route
             path="/admin/listado-productos"

@@ -3,7 +3,6 @@ import styles from "./NavBarShop.module.css";
 import OutContainer from "../GlobalCss/OutContainer.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import Login from "../Auth0/Login";
-import Logout from "../Auth0/Logout";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
@@ -27,7 +26,7 @@ function NavBar() {
   useEffect(() => {
     if (user && user.email) {
       axios
-        .get(`http://localhost:3001/owners/getFavorites/${user.email}`)
+        .get(`https://proyecto-grupal.herokuapp.com/owners/getFavorites/${user.email}`)
         .then((x) => {
           console.log(x.data);
           setFavorites(x.data);
@@ -38,7 +37,7 @@ function NavBar() {
 
   useEffect(() => {
     if (user) {
-      axios.get("http://localhost:3001/owners").then((x) => {
+      axios.get("https://proyecto-grupal.herokuapp.com/owners").then((x) => {
         const userdb = x.data.find((x) => x.email === user.email);
         if (userdb) {
           setUser({
@@ -54,7 +53,7 @@ function NavBar() {
         }
       });
     }
-    // axios.get(`http://localhost:3001/owners/getFavorites/${user.email}`).then(x=>{
+    // axios.get(`https://proyecto-grupal.herokuapp.com/owners/getFavorites/${user.email}`).then(x=>{
     //     setProductsFavNumber(x.data)})
   }, [dispatch, user]);
 
@@ -78,29 +77,24 @@ function NavBar() {
     <div className={OutContainer.container}>
       <nav className={styles.nav}>
         <div className={styles.item}>
-          <NavLink to={user?'/inicio':'/'} className={styles.logoLink} >
+          <NavLink to={user ? '/inicio' : '/'} className={styles.logoLink} >
             yumPaw
           </NavLink>
         </div>
-
         <div className={styles.item}>
           <NavLink to="/nosotros" className={styles.navLink}>
             Nosotros
           </NavLink>
-
           <NavLink to="/contacto" className={styles.navLink}>
             Contacto
           </NavLink>
-
           <NavLink to={user?'/providers':'/'} className={styles.navLink} onClick={()=>{if(!user)Swal.fire('necesitás ingresar a la página para ver a los yumpys')}}>
-            Yumpys
+            Yumpis
           </NavLink>
-
           <NavLink to="/shop" className={styles.navLink}>
             PetShop
           </NavLink>
         </div>
-
         <div className={styles.item}>
           <div className={styles.icons}>
             <div className={styles.icon}>
@@ -108,19 +102,14 @@ function NavBar() {
                 <img src="../../assets/img/shopping-bag.svg" alt="" />
                 <div className={styles.circle}>{total}</div>
               </NavLink>
-
-             
             </div>
-
             <div className={styles.icon}>
-              <NavLink to="/favoritos" className={styles.navLinkIcon}>
+              <NavLink to={user?'/favoritos':'/'} className={styles.navLinkIcon} onClick={()=>{if(!user)Swal.fire('necesitás ingresar a la página para agregar productos a favoritos')}}>
                 <img src="../../assets/img/favorite.svg" alt="" />
                 <div className={styles.circle}>{productsFavNumber}</div>
               </NavLink>
-              
             </div>
           </div>
-
           {/* <div>
             {!isAuthenticated && <img src="" alt=""></img>}
             {isAuthenticated && (
@@ -133,10 +122,9 @@ function NavBar() {
               </NavLink>
             )}
           </div> */}
-
           <div className={styles.buttons}>
             {!isAuthenticated && <Login></Login>}
-            {isAuthenticated && <DropdownMenu/>}
+            {isAuthenticated && <DropdownMenu />}
           </div>
         </div>
       </nav>

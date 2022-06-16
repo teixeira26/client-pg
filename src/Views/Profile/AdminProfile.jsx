@@ -16,7 +16,7 @@ export default function Profile() {
 
     useEffect(() => {
         if (isAuthenticated) {
-            axios.get("http://localhost:3001/owners").then((x) => {
+            axios.get("https://proyecto-grupal.herokuapp.com/owners").then((x) => {
                 const userdb = x.data.find((x) => x.email === user.email);
                 console.log(userdb);
                 setUser({
@@ -32,7 +32,7 @@ export default function Profile() {
                 });
                 console.log("userdb", userdb);
             }).then(() => {
-                return axios.get('http://localhost:3001/events')
+                return axios.get('https://proyecto-grupal.herokuapp.com/events')
             })
         }
     }, [user, dispatch]);
@@ -72,7 +72,7 @@ export default function Profile() {
                         userData.isAdmin ?
                             <div>
                                 <Link to='/admin/listado-productos'><button>Ver listado de productos en Petshop</button></Link>
-                                <Link to='/admin/sales-receipts'><button>Ver listado de comprobantes de compra</button></Link>
+                                <Link to='/admin/ventas-petshop'><button>Ver listado de comprobantes de compra</button></Link>
                                 <Link to='/admin/get-users'><button>Ver listado de usuarios registrados</button></Link>
                             </div>
                             : null

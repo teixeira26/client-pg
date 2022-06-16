@@ -10,12 +10,13 @@ import {
     GET_EVENTS,
     GET_PETS,
     GET_SOLDS,
-    GET_REVIEWS
+    GET_REVIEWS,
+    ID_OWNER
 } from '../actions-type/ownProvActionTypes';
 
 export function getOwners() {
     return async function (dispatch) {
-        var json = await axios.get(`http://localhost:3001/owners`);
+        var json = await axios.get(`https://proyecto-grupal.herokuapp.com/owners`);
         return dispatch({
             type: GET_OWNERS,
             payload: json.data
@@ -26,7 +27,7 @@ export function getOwners() {
 
 export function getProviders() {
     return async function (dispatch) {
-        var json = await axios.get(`http://localhost:3001/providers`)
+        var json = await axios.get(`https://proyecto-grupal.herokuapp.com/providers`)
         return dispatch({
             type: GET_PROVIDERS,
             payload: json.data
@@ -36,7 +37,7 @@ export function getProviders() {
 
 export function getProviderById(email) {
     return function(dispatch){
-        axios.get(`http://localhost:3001/providers/${email}`)
+        axios.get(`https://proyecto-grupal.herokuapp.com/providers/${email}`)
         .then(response => {
             dispatch({
                 type: ID_PROVIDER,
@@ -49,7 +50,7 @@ export function getProviderById(email) {
 export function getNameOwner(name) {
     return async function (dispatch) {
         try {
-            var json = await axios.get(`http://localhost:3001/owners?name=${name}`);
+            var json = await axios.get(`https://proyecto-grupal.herokuapp.com/owners?name=${name}`);
             return dispatch({
                 type: GET_NAME_OWNER,
                 payload: json.data
@@ -62,7 +63,7 @@ export function getNameOwner(name) {
 
 export function getSolds() {
     return async function (dispatch) {
-        var json = await axios.get(`http://localhost:3001/solds`);
+        var json = await axios.get(`https://proyecto-grupal.herokuapp.com/solds`);
         return dispatch({
             type: GET_SOLDS,
             payload: json.data
@@ -81,7 +82,7 @@ export function filterByOwner(payload) {
 export function putProvider(modification) {
     return async function () {
         try {
-            await axios.put(`http://localhost:3001/providers/`, modification)
+            await axios.put(`https://proyecto-grupal.herokuapp.com/providers/`, modification)
         } catch (error) {
             console.log(error)
         }
@@ -92,7 +93,7 @@ export function postPet(email, modification) {
     return async function () {
         try {
             console.log(email)
-            await axios.post(`http://localhost:3001/pets`, modification)
+            await axios.post(`https://proyecto-grupal.herokuapp.com/pets`, modification)
         } catch (error) {
             console.log(error)
         }
@@ -103,7 +104,7 @@ export function putOwnerInfo(email, modification) {
     return async function () {
         try {
             console.log(email)
-            await axios.put(`http://localhost:3001/owners/${email}`, modification)
+            await axios.put(`https://proyecto-grupal.herokuapp.com/owners/${email}`, modification)
         } catch (error) {
             console.log(error)
         }
@@ -112,7 +113,7 @@ export function putOwnerInfo(email, modification) {
 
 export function getPets() {
     return async function (dispatch) {
-        var json = await axios.get(`http://localhost:3001/pets`);
+        var json = await axios.get(`https://proyecto-grupal.herokuapp.com/pets`);
         return dispatch({
             type: GET_PETS,
             payload: json.data
@@ -124,7 +125,7 @@ export function getPets() {
 export function postProvider(newProvider) {
     return async function () {
         try {
-            await axios.post(`http://localhost:3001/providers`, newProvider)
+            await axios.post(`https://proyecto-grupal.herokuapp.com/providers`, newProvider)
         } catch (error) {
             console.log(error)
         }
@@ -148,7 +149,7 @@ export function filterByProviderService(payload){
 
 export function getEvents() {
     return async function (dispatch) {
-        var json = await axios.get(`http://localhost:3001/events`);
+        var json = await axios.get(`https://proyecto-grupal.herokuapp.com/events`);
         return dispatch({
             type: GET_EVENTS,
             payload: json.data
@@ -159,7 +160,7 @@ export function getEvents() {
 export function postEvent(newEvent) {
     return async function () {
         try {
-            await axios.post(`http://localhost:3001/events`, newEvent)
+            await axios.post(`https://proyecto-grupal.herokuapp.com/events`, newEvent)
         } catch (error) {
             console.log(error)
         }
@@ -168,7 +169,7 @@ export function postEvent(newEvent) {
 
 export function getReviews() {
     return async function (dispatch) {
-        var json = await axios.get(`http://localhost:3001/reviews`);
+        var json = await axios.get(`https://proyecto-grupal.herokuapp.com/reviews`);
         return dispatch({
             type: GET_REVIEWS,
             payload: json.data
@@ -179,7 +180,7 @@ export function getReviews() {
 export function putEvent(id, modification) {
     return async function () {
         try {
-            await axios.put(`http://localhost:3001/events/${id}`, modification)
+            await axios.put(`https://proyecto-grupal.herokuapp.com/events/${id}`, modification)
         } catch (error) {
             console.log(error)
         }
@@ -200,3 +201,15 @@ export function groupEvents(){
         type: 'GROUP_EVENTS'
     }
 }
+
+export function getOwnerById(email) {
+    return function(dispatch){
+        axios.get(`https://proyecto-grupal.herokuapp.com/owners/${email}`)
+        .then(response => {
+            dispatch({
+                type: ID_OWNER,
+                payload: response.data
+            })
+        })
+    }
+};

@@ -21,8 +21,7 @@ export default function AddOwner() {
     async function onSubmit(e) {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:3001/owners', owner)
-
+            await axios.post('https://proyecto-grupal.herokuapp.com/owners', owner)
             Swal.fire({
                 position: 'top-end',
                 icon: 'success',
@@ -30,7 +29,6 @@ export default function AddOwner() {
                 showConfirmButton: false,
                 timer: 1500
             });
-
             setOwner({
                 name: '',
                 lastName: '',

@@ -22,7 +22,7 @@ export default function Providers() {
 
     useEffect(() => {
         dispatch(getProviders())
-        axios.get('http://localhost:3001/reviews').then(x => setReviews(x.data))
+        axios.get('https://proyecto-grupal.herokuapp.com/reviews').then(x => setReviews(x.data))
     }, [dispatch]);
 
     const providers = useSelector(state => state.filteredProviders);
@@ -76,7 +76,7 @@ export default function Providers() {
                         className={styles.leftArrow}
                     />
                 </NavLink>
-                <h1 className={styles.providersTitle}>¡Conoce a nuestros yumpis!</h1>
+                <h1 className={styles.providersTitle}>¡Conocé a nuestros yumpis!</h1>
                 <div className={styles.providersFlex}>
                     <div className={styles.providersFilters}>
                         <section className={styles.selects}>
@@ -121,7 +121,9 @@ export default function Providers() {
                             })}
                     </div>
                 </div>
+                <div className={styles.paginado}>
                 <Paginated itemsPerPage={providersPerPage} items={providers.length} paginated={paginated} currentPage={currentPage} />
+                </div>
             </section>
             <Footer />
         </div>
