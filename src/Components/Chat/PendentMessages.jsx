@@ -11,14 +11,14 @@ export default function PendentMessages(){
     useEffect(()=>{
         if(user){
             console.log(user.email)
-            axios.get('http://localhost:3001/providers?filter=&order=ASC').then(x=>{
+            axios.get('https://proyecto-grupal.herokuapp.com/providers?filter=&order=ASC').then(x=>{
                 let messages = x.data.filter(x=>{
                     return(x.pendingMessages.find(x=>x.ownerEmail === user.email))
                 })
                 console.log(messages)
                 setPendingMessagesOwner(messages)
             })
-            axios.get('http://localhost:3001/owners').then(x=>{
+            axios.get('https://proyecto-grupal.herokuapp.com/owners').then(x=>{
                 let messages = x.data.filter(x=>{
                     return(x.pendingMessages.find(x=>x.providerEmail === user.email))
                 })
@@ -26,7 +26,7 @@ export default function PendentMessages(){
                 setPendingMessagesProvider(messages)
             })
         }
-        //     axios.get('http://localhost:3001/owners').then(x=>{
+        //     axios.get('https://proyecto-grupal.herokuapp.com/owners').then(x=>{
         //         // if( x.data.pendingMessages){
         //         // let messages = x.data.filter(x=>{x.pendingMessages.providerEmail === user.email})
         //         // setPendingMessagesProvider(...pendingMessagesProvider, messages)
