@@ -64,7 +64,7 @@ function App() {
 
   useEffect(() => {
     const searchUser = () => {
-      axios.get("https://proyecto-grupal.herokuapp.com/owners").then((res) => {
+      axios.get("https://backend-pg-production.up.railway.app/owners").then((res) => {
         let resp = res.data.find((x) => x.email === user.email);
         console.log(resp);
         if (resp) {

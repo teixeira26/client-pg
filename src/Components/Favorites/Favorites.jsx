@@ -18,7 +18,7 @@ const Favorites = () => {
   const [productsFavNumber, setProductsFavNumber] = useState([])
   const dispatch = useDispatch()
   useEffect(() => {
-    axios.get(`https://proyecto-grupal.herokuapp.com/owners/getFavorites/${user.email}`).then(x => {
+    axios.get(`https://backend-pg-production.up.railway.app/owners/getFavorites/${user.email}`).then(x => {
       setProductsFavNumber(x.data)
     })
     dispatch(getProducts());
@@ -36,7 +36,7 @@ const Favorites = () => {
     let withoutFav = productsFav.filter(fav => fav.id !== id)
     setProductsFav(withoutFav)
 
-    const AllOwners = await axios.get("https://proyecto-grupal.herokuapp.com/owners");
+    const AllOwners = await axios.get("https://backend-pg-production.up.railway.app/owners");
 
     const owner = AllOwners.data.find(x => x.email === user.email)
     console.log(owner)
@@ -45,7 +45,7 @@ const Favorites = () => {
       favorites: owner.favorites[0] ? owner.favorites.filter(x => x !== id) : []
     }
     console.log(objToPut);
-    await axios.put("https://proyecto-grupal.herokuapp.com/owners/addFavorite", objToPut);
+    await axios.put("https://backend-pg-production.up.railway.app/owners/addFavorite", objToPut);
     dispatch(addTofavorites(objToPut.favorites));
   };
 

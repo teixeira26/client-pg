@@ -3,7 +3,7 @@ import { GET_PRODUCTS, SEARCHBAR_PRODUCTS, FILTER_BY_PET, SORT_PRICE, FILTER_CAT
 
 export function getProducts (){
     return async function (dispatch){
-        let response = await axios.get('https://proyecto-grupal.herokuapp.com/products');
+        let response = await axios.get('https://backend-pg-production.up.railway.app/products');
         return dispatch({
             type: GET_PRODUCTS,
             payload: response.data
@@ -13,7 +13,7 @@ export function getProducts (){
 
 export function searchBarProducts (name){
     return async function (dispatch){
-        let response = await axios.get(`https://proyecto-grupal.herokuapp.com/products?name=${name}`);
+        let response = await axios.get(`https://backend-pg-production.up.railway.app/products?name=${name}`);
         return dispatch({
             type: SEARCHBAR_PRODUCTS,
             payload: response.data
@@ -53,7 +53,7 @@ export function filterTargetAnimal(payload){
 
 export function getById(id){
     return function(dispatch){
-        axios.get(`https://proyecto-grupal.herokuapp.com/products/${id}`)
+        axios.get(`https://backend-pg-production.up.railway.app/products/${id}`)
         .then(response => {
             dispatch({
                 type: ID_PRODUCT,
@@ -106,7 +106,7 @@ export function postSold(payload) {
     return async function () {
         try {
 
-            await axios.post(`https://proyecto-grupal.herokuapp.com/solds`, payload)
+            await axios.post(`https://backend-pg-production.up.railway.app/solds`, payload)
         } catch (error) {
             console.log(error)
         }
@@ -124,7 +124,7 @@ export function selectedProduct(payload){
 export function putProduct(id, modification) {
     return async function () {
         try {
-            await axios.put(`https://proyecto-grupal.herokuapp.com/products/${id}`, modification)
+            await axios.put(`https://backend-pg-production.up.railway.app/products/${id}`, modification)
         } catch (error) {
             console.log(error)
         }
@@ -135,7 +135,7 @@ export function putProduct(id, modification) {
 export function postProduct(product) {
     return async function () {
         try {
-            await axios.post(`https://proyecto-grupal.herokuapp.com/products/`, product)
+            await axios.post(`https://backend-pg-production.up.railway.app/products/`, product)
         } catch (error) {
             console.log(error)
         }

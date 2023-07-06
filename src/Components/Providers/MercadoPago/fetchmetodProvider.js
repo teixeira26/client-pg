@@ -1,5 +1,5 @@
 export const fetchCTokenProvider = async (endpoint, data ) =>{
-    const url=`https://proyecto-grupal.herokuapp.com/${endpoint}`;
+    const url=`https://backend-pg-production.up.railway.app/${endpoint}`;
     const token = localStorage.getItem('token') || '';
     // console.log('token', token)
     // console.log('endpoint',endpoint)

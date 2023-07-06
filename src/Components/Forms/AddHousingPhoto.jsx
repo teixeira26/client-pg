@@ -21,7 +21,7 @@ export default function AddHousingPhoto() {
     if (user) {
       axios
         .get(
-          "https://proyecto-grupal.herokuapp.com/providers?filter=&order=ASC"
+          "https://backend-pg-production.up.railway.app/providers?filter=&order=ASC"
         )
         .then((x) => {
           setInfoUser(x.data.find((x) => x.email === user.email));

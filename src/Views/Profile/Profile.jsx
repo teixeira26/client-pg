@@ -30,7 +30,7 @@ export default function Profile() {
     if (user) {
       axios
         .get(
-          "https://proyecto-grupal.herokuapp.com/providers?filter=&order=ASC"
+          "https://backend-pg-production.up.railway.app/providers?filter=&order=ASC"
         )
         .then((info) => {
           let data = info.data.find((x) => x.email === user.email);
@@ -44,7 +44,7 @@ export default function Profile() {
   useEffect(() => {
     if (isAuthenticated) {
       axios
-        .get("https://proyecto-grupal.herokuapp.com/owners")
+        .get("https://backend-pg-production.up.railway.app/owners")
         .then((x) => {
           const userdb = x.data.find((x) => x.email === user.email);
           console.log(userdb);
@@ -62,7 +62,7 @@ export default function Profile() {
           console.log("userdb", userdb);
         })
         .then(() => {
-          return axios.get("https://proyecto-grupal.herokuapp.com/events");
+          return axios.get("https://backend-pg-production.up.railway.app/events");
         })
         .then((x) => {
           setEventsOwner(x.data.filter((x) => x.ownerEmail === user.email));
@@ -77,7 +77,7 @@ export default function Profile() {
     if (user) {
       axios
         .get(
-          "https://proyecto-grupal.herokuapp.com/providers?filter=&order=ASC"
+          "https://backend-pg-production.up.railway.app/providers?filter=&order=ASC"
         )
         .then((x) => {
           let providerCheck = x.data.find((x) => x.email === user.email);
@@ -101,7 +101,7 @@ export default function Profile() {
   }, [user]);
 
   async function byePet(id) {
-    await axios.delete(`https://proyecto-grupal.herokuapp.com/pets/${id}`, {
+    await axios.delete(`https://backend-pg-production.up.railway.app/pets/${id}`, {
       isActive: false,
     });
     dispatch(getPets());

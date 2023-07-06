@@ -18,7 +18,7 @@ export function shoppingReducer(state, action) {
         case TYPES.ADD_TO_CART: {
             console.log('entré al reducer')
             // Buscamos id (pasado por payload) en el arreglo de productos y guardamos el producto que coincida con el id.
-            axios.get('https://proyecto-grupal.herokuapp.com/products').then(x=>{
+            axios.get('https://backend-pg-production.up.railway.app/products').then(x=>{
                 const product = x.find( product => product.id === action.payload);
                 console.log(product)
             })

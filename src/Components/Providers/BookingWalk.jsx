@@ -34,7 +34,7 @@ export default function BookingWalk() {
 
     useEffect(() => {
         if (providerEmail) {
-            axios.get('https://proyecto-grupal.herokuapp.com/providers?filter=&order=ASC').then(info => {
+            axios.get('https://backend-pg-production.up.railway.app/providers?filter=&order=ASC').then(info => {
                 let data = info.data.find(x => x.email === providerEmail);
                 formik.values.price = data.price * 4
                 formik.values.providerName = data.name + ' ' + data.lastName
@@ -67,7 +67,7 @@ export default function BookingWalk() {
     }, [events])
     useEffect(() => {
         if (user) {
-            axios.get('https://proyecto-grupal.herokuapp.com/owners').then(x => {
+            axios.get('https://backend-pg-production.up.railway.app/owners').then(x => {
                 let miInfo = x.data.find(y => y.email === user.email);
                 setMyinfo(miInfo)
             })
@@ -115,8 +115,8 @@ export default function BookingWalk() {
             }).then(async (result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    await axios.post("https://proyecto-grupal.herokuapp.com/events", formData);
-                    axios.post('https://proyecto-grupal.herokuapp.com/mailer/', { email: user.email, subject: "Confirmación de reserva Yum Paw", text: "Recién hiciste una reserva en nuestra página, te felicitamos :)" })
+                    await axios.post("https://backend-pg-production.up.railway.app/events", formData);
+                    axios.post('https://backend-pg-production.up.railway.app/mailer/', { email: user.email, subject: "Confirmación de reserva Yum Paw", text: "Recién hiciste una reserva en nuestra página, te felicitamos :)" })
                     console.log(formData);
                     Swal.fire('¡El paseo fue confirmado con éxito!', '', 'success')
                     navigate('/mis-servicios')

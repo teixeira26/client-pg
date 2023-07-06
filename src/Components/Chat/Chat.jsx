@@ -20,7 +20,7 @@ export const Chat = () => {
   const [mensajes, setMensajes] = useState([]);
 
   useEffect(() => {
-    axios.get('https://proyecto-grupal.herokuapp.com/providers?filter=&order=ASC').then(x => {
+    axios.get('https://backend-pg-production.up.railway.app/providers?filter=&order=ASC').then(x => {
 
       const mame = x.data.find(x => x.email === providerEmail)
       console.log(`${mame.name} ${mame.lastName} ${mame.service[0]}`)

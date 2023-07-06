@@ -21,7 +21,7 @@ const ProductCard = ({
   const addFavorite = async () => {
     if (user) {
       if (!isFavorite) {
-        const AllOwners = await axios.get("https://proyecto-grupal.herokuapp.com/owners");
+        const AllOwners = await axios.get("https://backend-pg-production.up.railway.app/owners");
         const owner = AllOwners.data.find((x) => x.email === user.email);
         console.log(owner);
         let objToPut = {
@@ -30,9 +30,9 @@ const ProductCard = ({
         };
         setFavorites([...favorites, id]);
 
-        await axios.put("https://proyecto-grupal.herokuapp.com/owners/addFavorite", objToPut);
+        await axios.put("https://backend-pg-production.up.railway.app/owners/addFavorite", objToPut);
       } else {
-        const AllOwners = await axios.get("https://proyecto-grupal.herokuapp.com/owners");
+        const AllOwners = await axios.get("https://backend-pg-production.up.railway.app/owners");
 
         const owner = AllOwners.data.find((x) => x.email === user.email);
         console.log(owner);
@@ -44,7 +44,7 @@ const ProductCard = ({
         };
         setFavorites(favorites.filter((x) => x !== id));
         console.log(objToPut)
-        await axios.put("https://proyecto-grupal.herokuapp.com/owners/addFavorite", objToPut);
+        await axios.put("https://backend-pg-production.up.railway.app/owners/addFavorite", objToPut);
       }}
       else{ 
         Swal.fire('Necesitás iniciar sesión para agregar a favoritos.', '', 'warning')}

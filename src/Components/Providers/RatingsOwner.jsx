@@ -14,7 +14,7 @@ const RatingsOwner = () => {
   const [reviews, setReviews] = useState([]);
   useEffect(() => {
     if (isAuthenticated) {
-      axios.get("https://proyecto-grupal.herokuapp.com/reviews").then((x) => {
+      axios.get("https://backend-pg-production.up.railway.app/reviews").then((x) => {
         let myreviews = x.data.filter((x) => x.owner.email === user.email);
         if (myreviews.length) setReviews(myreviews);
       });

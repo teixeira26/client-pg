@@ -12,7 +12,7 @@ export const Quesos = () => {
             name: user.given_name,
             lastName: user.family_name,
         }
-        await axios.post('https://proyecto-grupal.herokuapp.com/owners', owner)
+        await axios.post('https://backend-pg-production.up.railway.app/owners', owner)
         navigate('/inicio')
     }
     // const providerRegister = async()=>{
@@ -21,7 +21,7 @@ export const Quesos = () => {
     //         name:user.given_name,
     //         lastName: user.family_name,
     //       }
-    //       await axios.post('https://proyecto-grupal.herokuapp.com/providers', provider)
+    //       await axios.post('https://backend-pg-production.up.railway.app/providers', provider)
     //       navigate('/infoProvider')
     // }
     return (

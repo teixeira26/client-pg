@@ -21,7 +21,7 @@ export default function AddOwner() {
     async function onSubmit(e) {
         e.preventDefault();
         try {
-            await axios.post('https://proyecto-grupal.herokuapp.com/owners', owner)
+            await axios.post('https://backend-pg-production.up.railway.app/owners', owner)
             Swal.fire({
                 position: 'top-end',
                 icon: 'success',

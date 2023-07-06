@@ -49,7 +49,7 @@ export default function PutReview() {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           Swal.fire('¡Tu reseña fue modificada con éxito!', '', 'success')
-          await axios.put('https://proyecto-grupal.herokuapp.com/reviews', formData)
+          await axios.put('https://backend-pg-production.up.railway.app/reviews', formData)
           navigate('/inicio')
         } else if (result.isDenied) {
           Swal.fire('La modificación no fue guardada.', '', 'info')

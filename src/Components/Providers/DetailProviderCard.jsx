@@ -23,7 +23,7 @@ export default function DetailProviderCard({ name, lastName, profilePicture, add
     const dispatch = useDispatch();
 
     useEffect(() => {
-        axios.get('https://proyecto-grupal.herokuapp.com/reviews').then(x => {
+        axios.get('https://backend-pg-production.up.railway.app/reviews').then(x => {
             let providerEvaluations = x.data.filter(x => x.provider.email === email);
             setReviews(providerEvaluations);
             console.log(providerEvaluations)
@@ -37,7 +37,7 @@ export default function DetailProviderCard({ name, lastName, profilePicture, add
 
     useEffect(() => {
         if (user) {
-            axios.get("https://proyecto-grupal.herokuapp.com/providers?filter=&order=ASC").then((x) => {
+            axios.get("https://backend-pg-production.up.railway.app/providers?filter=&order=ASC").then((x) => {
                 const providerCheck = x.data.find((x) => x.email === email);
                 console.log(providerCheck)
                 setProviderInfo(providerCheck);

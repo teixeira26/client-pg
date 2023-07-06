@@ -21,7 +21,7 @@ export default function Providers() {
 
     useEffect(() => {
         dispatch(getProviders())
-        axios.get('https://proyecto-grupal.herokuapp.com/reviews').then(x => setReviews(x.data))
+        axios.get('https://backend-pg-production.up.railway.app/reviews').then(x => setReviews(x.data))
     }, [dispatch]);
 
     const providers = useSelector(state => state.filteredProviders);

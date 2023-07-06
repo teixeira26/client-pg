@@ -17,7 +17,7 @@ export default function Profile() {
   useEffect(() => {
     if (isAuthenticated) {
       axios
-        .get("https://proyecto-grupal.herokuapp.com/owners")
+        .get("https://backend-pg-production.up.railway.app/owners")
         .then((x) => {
           const userdb = x.data.find((x) => x.email === user.email);
           console.log(userdb);
@@ -35,7 +35,7 @@ export default function Profile() {
           console.log("userdb", userdb);
         })
         .then(() => {
-          return axios.get("https://proyecto-grupal.herokuapp.com/events");
+          return axios.get("https://backend-pg-production.up.railway.app/events");
         });
     }
   }, [user, dispatch]);

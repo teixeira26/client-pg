@@ -23,7 +23,7 @@ const DropdownMenu = () => {
   useEffect(() => {
     if (user) {
       dispatch(chargeCart('cart'));
-      axios.get("https://proyecto-grupal.herokuapp.com/owners").then((x) => {
+      axios.get("https://backend-pg-production.up.railway.app/owners").then((x) => {
         const userdb = x.data.find((x) => x.email === user.email);
         console.log('USUARIO DB', userdb)
         if (userdb) {
@@ -42,7 +42,7 @@ const DropdownMenu = () => {
       });
     }
 
-    // axios.get(`https://proyecto-grupal.herokuapp.com/owners/getFavorites/${user.email}`).then(x=>{
+    // axios.get(`https://backend-pg-production.up.railway.app/owners/getFavorites/${user.email}`).then(x=>{
     //     setProductsFavNumber(x.data)})
   }, [dispatch, user]);
 

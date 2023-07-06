@@ -28,7 +28,7 @@ const Shop = () => {
   useEffect(() => {
     if (user && user.email) {
       axios
-        .get(`https://proyecto-grupal.herokuapp.com/owners/getFavorites/${user.email}`)
+        .get(`https://backend-pg-production.up.railway.app/owners/getFavorites/${user.email}`)
         .then((x) => {
           console.log(x.data);
           setFavorites(x.data);
